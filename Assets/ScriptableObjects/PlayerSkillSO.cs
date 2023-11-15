@@ -5,10 +5,19 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PlayerSkill")]
 public class PlayerSkillSO : ScriptableObject {
 
+    public SkillType skillType;
+
     public string skillName;
     public string skillDescription;
     public Sprite skillIcon;
     public bool skillUnlocked;
     public bool skillAvailableToUnlock;
 
+    public float skillCooldownTime;
+    public float skillDuration;
+
+}
+
+public enum SkillType {
+    Shield,
 }

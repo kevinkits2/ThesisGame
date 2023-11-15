@@ -11,6 +11,12 @@ public class EnemyAggressiveState : MonoBehaviour {
     [SerializeField] private float attackRange;
 
     private Transform target;
+    private EnemyShotgunAttack enemyShotgunAttackComponent;
+
+
+    private void Awake() {
+        enemyShotgunAttackComponent = GetComponent<EnemyShotgunAttack>();
+    }
 
 
     private void Update() {
@@ -27,6 +33,8 @@ public class EnemyAggressiveState : MonoBehaviour {
     }
 
     public void SetTarget(Transform target) {
-        this.target = target; 
+        this.target = target;
+        enemyShotgunAttackComponent.enabled = true;
+        enemyShotgunAttackComponent.Init(target);
     }
 }

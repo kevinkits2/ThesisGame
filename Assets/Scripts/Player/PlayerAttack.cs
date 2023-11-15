@@ -25,7 +25,7 @@ public class PlayerAttack : MonoBehaviour {
         GameObject instantiatedProjectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
         if (!instantiatedProjectile.TryGetComponent<Projectile>(out Projectile projectile)) return;
 
-        projectile.Init(shootDirection, 5f);
+        projectile.Init(shootDirection);
         StartCoroutine(AttackCooldown());
     }
 

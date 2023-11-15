@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour {
+public class EnemyProjectile : MonoBehaviour {
 
     [SerializeField] private float projectileSpeed;
     [SerializeField] private int projectileDamage;
@@ -11,7 +11,7 @@ public class Projectile : MonoBehaviour {
     private Vector3 direction;
 
 
-    public void Init(Vector3 direction, float lifeTime=5f) {
+    public void Init(Vector3 direction, float lifeTime = 5f) {
         isAwake = true;
         this.direction = direction;
 
@@ -26,9 +26,9 @@ public class Projectile : MonoBehaviour {
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        if (!collision.gameObject.TryGetComponent<IDamageable>(out IDamageable damageable)) return;
+        //if (!collision.gameObject.TryGetComponent<IDamageable>(out IDamageable damageable)) return;
 
-        damageable.TakeDamage(projectileDamage);
-        Destroy(gameObject);
+        //damageable.TakeDamage(projectileDamage);
+        //Destroy(gameObject);
     }
 }
