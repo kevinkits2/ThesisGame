@@ -9,6 +9,7 @@ public class InputManager : MonoBehaviour {
 
     public event EventHandler OnDashAction;
     public event EventHandler OnAttackAction;
+    public event EventHandler OnSkillTreeAction;
     private bool attackActionHeldDown;
 
     private PlayerControls playerControls;
@@ -28,6 +29,12 @@ public class InputManager : MonoBehaviour {
         playerControls.Player.Attack.canceled += HandleAttackCanceled;
 
         playerControls.Player.Dash.performed += HandleDashPerformed;
+
+        playerControls.UI.SkillTree.performed += HandleSkillTreePerfromed;
+    }
+
+    private void HandleSkillTreePerfromed(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
+        OnSkillTreeAction.Invoke(this, EventArgs.Empty);
     }
 
     private void HandleDashPerformed(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
@@ -64,5 +71,13 @@ public class InputManager : MonoBehaviour {
         mousePosition.z = 0f;
 
         return mousePosition;
+    }
+
+    public void DisablePlayerControls() {
+        playerControls.Player.Disable();
+    }
+
+    public void EnablePlayerControls() {
+        playerControls.Player.Enable();
     }
 }
