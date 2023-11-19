@@ -10,6 +10,7 @@ public class InputManager : MonoBehaviour {
     public event EventHandler OnDashAction;
     public event EventHandler OnAttackAction;
     public event EventHandler OnSkillTreeAction;
+    public event EventHandler OnStatsAction;
     private bool attackActionHeldDown;
 
     private PlayerControls playerControls;
@@ -31,6 +32,11 @@ public class InputManager : MonoBehaviour {
         playerControls.Player.Dash.performed += HandleDashPerformed;
 
         playerControls.UI.SkillTree.performed += HandleSkillTreePerfromed;
+        playerControls.UI.Stats.performed += HandleStatsPerformed;
+    }
+
+    private void HandleStatsPerformed(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
+        OnStatsAction.Invoke(this, EventArgs.Empty);
     }
 
     private void HandleSkillTreePerfromed(UnityEngine.InputSystem.InputAction.CallbackContext obj) {

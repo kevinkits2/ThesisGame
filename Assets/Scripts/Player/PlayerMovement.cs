@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private float playerDashCooldown;
 
     private Rigidbody2D playerRigibody;
-    private Vector3 moveVectorNormalized;
+    private Vector2 moveVectorNormalized;
     private bool isMoving;
     private bool isDashing;
     private bool dashOnCooldown;
@@ -52,12 +52,15 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void Move() {
-        transform.position += moveVectorNormalized * Time.deltaTime * playerMoveSpeed;
+        // Old movement
+        //transform.position += moveVectorNormalized * Time.deltaTime * playerMoveSpeed;
+
+        playerRigibody.velocity = new Vector2(moveVectorNormalized.x, moveVectorNormalized.y) * playerMoveSpeed * Time.deltaTime;
     }
 
     private void GetMoveVector() {
         Vector2 inputVector = InputManager.Instance.GetMovementVectorNormalized();
-        moveVectorNormalized = new Vector3(inputVector.x, inputVector.y, 0f);
+        moveVectorNormalized = new Vector2(inputVector.x, inputVector.y);
 
         if (moveVectorNormalized.sqrMagnitude > 0) {
             isMoving = true;

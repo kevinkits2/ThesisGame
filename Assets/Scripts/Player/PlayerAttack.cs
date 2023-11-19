@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour {
 
-    [SerializeField] private GameObject projectilePrefab;
-    [SerializeField] private float attackCooldownTime;
-
     private Vector3 shootDirection;
     private bool attackOnCooldown;
 
@@ -21,11 +18,10 @@ public class PlayerAttack : MonoBehaviour {
 
     private void HandleAttackAction(object sender, System.EventArgs e) {
         if (attackOnCooldown) return;
-        
-        GameObject instantiatedProjectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
-        if (!instantiatedProjectile.TryGetComponent<Projectile>(out Projectile projectile)) return;
 
-        projectile.Init(shootDirection);
+        Vector3 shootOrigin = Player.Instance.GetWeaponShootOrigin();
+        Player.Instance.GetCurrentWeapon().Shoot(shootOrigin, shootDirection);
+
         StartCoroutine(AttackCooldown());
     }
 
@@ -39,7 +35,7 @@ public class PlayerAttack : MonoBehaviour {
     private IEnumerator AttackCooldown() {
         attackOnCooldown = true;
 
-        yield return new WaitForSeconds(attackCooldownTime);
+        yield return new WaitForSeconds(Player.Instance.GetCurrentWeapon().reloadTime);
 
         attackOnCooldown = false;
     }

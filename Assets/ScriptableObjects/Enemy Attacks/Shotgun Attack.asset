@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9df2436cdf6bd4c45ae44e381d567334, type: 3}
+  m_Name: Shotgun Attack
+  m_EditorClassIdentifier: 
+  isProjectile: 1
+  projectileAmount: 3
+  projectileSpread: 20
+  projectileSpreadStartAngle: -20
+  projectilePrefab: {fileID: 4610323250555688255, guid: 7f0cec10333bec446aaa39c91856fd9a, type: 3}
+  projectileLifetime: 3
+  projectileDamage: 10
+  projectileSpeed: 10
+  projectileAttackCooldown: 3

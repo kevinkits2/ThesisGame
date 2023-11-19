@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class EnemyProjectile : MonoBehaviour {
 
-    [SerializeField] private float projectileSpeed;
-    [SerializeField] private int projectileDamage;
+    [SerializeField] private LayerMask wallLayer;
+
+    private float projectileSpeed;
+    private int projectileDamage;
 
     private bool isAwake;
     private Vector3 direction;
 
 
-    public void Init(Vector3 direction, float lifeTime = 5f) {
+    public void Init(Vector3 direction, float projectileSpeed, int projectileDamage, float lifeTime = 5f) {
         isAwake = true;
         this.direction = direction;
+        this.projectileSpeed = projectileSpeed;
+        this.projectileDamage = projectileDamage;
 
         Destroy(gameObject, lifeTime);
     }
@@ -22,13 +26,18 @@ public class EnemyProjectile : MonoBehaviour {
         if (!isAwake) return;
 
         transform.position += direction * projectileSpeed * Time.deltaTime;
-        transform.right = -direction;
+        transform.right = direction;
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        //if (!collision.gameObject.TryGetComponent<IDamageable>(out IDamageable damageable)) return;
+        if ((wallLayer.value & (1 << collision.transform.gameObject.layer)) > 0) {
+            Destroy(gameObject);
+            return;
+        }
 
-        //damageable.TakeDamage(projectileDamage);
-        //Destroy(gameObject);
+        if (!collision.gameObject.TryGetComponent<PlayerHealth>(out PlayerHealth playerHealth)) return;
+
+        playerHealth.TakeDamage(projectileDamage);
+        Destroy(gameObject);
     }
 }

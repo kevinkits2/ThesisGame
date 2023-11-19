@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour {
 
+    [SerializeField] private LayerMask wallLayer;
     [SerializeField] private float projectileSpeed;
     [SerializeField] private int projectileDamage;
 
@@ -11,9 +12,11 @@ public class Projectile : MonoBehaviour {
     private Vector3 direction;
 
 
-    public void Init(Vector3 direction, float lifeTime=5f) {
+    public void Init(Vector3 direction, float projectileSpeed, int projectileDamage, float lifeTime = 5f) {
         isAwake = true;
         this.direction = direction;
+        this.projectileSpeed = projectileSpeed;
+        this.projectileDamage = projectileDamage;
 
         Destroy(gameObject, lifeTime);
     }
@@ -26,6 +29,11 @@ public class Projectile : MonoBehaviour {
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
+        if ((wallLayer.value & (1 << collision.transform.gameObject.layer)) > 0) {
+            Destroy(gameObject);
+            return;
+        }
+
         if (!collision.gameObject.TryGetComponent<IDamageable>(out IDamageable damageable)) return;
 
         damageable.TakeDamage(projectileDamage);

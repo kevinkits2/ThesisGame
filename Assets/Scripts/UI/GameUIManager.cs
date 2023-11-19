@@ -10,7 +10,10 @@ public class GameUIManager : MonoBehaviour {
     public event Action<PlayerSkillSO> OnSkillButtonClicked;
 
     [SerializeField] private GameObject playerSkillTreeContainer;
+    [SerializeField] private GameObject playerStatsContainer;
+
     private bool skillTreeContainerOpened;
+    private bool statsContainerOpened;
 
 
     private void Awake() {
@@ -30,6 +33,17 @@ public class GameUIManager : MonoBehaviour {
 
         SkillTreeUI skillTreeUI = playerSkillTreeContainer.GetComponent<SkillTreeUI>();
         skillTreeUI.OnSkillButtonClicked += HandleSkillButtonClicked;
+
+        InputManager.Instance.OnStatsAction += HandleStatsAction;
+    }
+
+    private void HandleStatsAction(object sender, EventArgs e) {
+        if (statsContainerOpened) {
+            CloseStatsContainer();
+        }
+        else {
+            OpenStatsContainer();
+        }
     }
 
     private void HandleSkillButtonClicked(PlayerSkillSO obj) {
@@ -57,5 +71,19 @@ public class GameUIManager : MonoBehaviour {
         playerSkillTreeContainer.SetActive(false);
 
         skillTreeContainerOpened = false;
+    }
+
+    private void OpenStatsContainer() {
+        InputManager.Instance.DisablePlayerControls();
+        playerStatsContainer.SetActive(true);
+
+        statsContainerOpened = true;
+    }
+
+    private void CloseStatsContainer() {
+        InputManager.Instance.EnablePlayerControls();
+        playerStatsContainer.SetActive(false);
+
+        statsContainerOpened = false;
     }
 }

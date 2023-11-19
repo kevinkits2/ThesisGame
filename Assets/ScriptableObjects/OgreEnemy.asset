@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7961aaf49065ebc4b9b9c07c5d6cdcff, type: 3}
+  m_Name: OgreEnemy
+  m_EditorClassIdentifier: 
+  enemyPrefab: {fileID: 245786242009263898, guid: 99dca1d3c9b96904e9913a6e379a26a1, type: 3}
+  projectileAttack: {fileID: 11400000, guid: 5ad10661de9802441a4019781233ebb4, type: 2}
+  particleAttack: {fileID: 11400000, guid: 865aee1cc29d91343928fcff5bd52ef7, type: 2}
+  enemyMaxHealth: 50
+  enemyMoveSpeed: 5
+  experiencePointsOnDeath: 10

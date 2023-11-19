@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(DamageFlash))]
-public class PlayerHealth : MonoBehaviour, IDamageable {
+public class PlayerHealth : MonoBehaviour {
+
+    public event Action<int> OnTakeDamage;
 
     [SerializeField] private int maxHealth;
 
@@ -21,9 +24,18 @@ public class PlayerHealth : MonoBehaviour, IDamageable {
         currentHealth -= damage;
         damageFlash.CallDamageFlash();
 
+        OnTakeDamage.Invoke(damage);
+
         if (currentHealth <= 0) {
             Destroy(gameObject);
         }
     }
 
+    public int GetMaxHealth() {
+        return maxHealth;
+    }
+
+    public int GetCurrentHealth() {
+        return currentHealth;
+    }
 }

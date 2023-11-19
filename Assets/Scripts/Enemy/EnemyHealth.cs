@@ -10,12 +10,14 @@ public class EnemyHealth : MonoBehaviour, IDamageable {
 
     [SerializeField] private int maxHealth;
 
+    private Enemy enemy;
     private DamageFlash damageFlash;
     private int currentHealth;
 
 
     private void Awake() {
         damageFlash = GetComponent<DamageFlash>();
+        enemy = GetComponent<Enemy>();
 
         currentHealth = maxHealth;
     }
