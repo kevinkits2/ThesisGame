@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour {
 
+    private PlayerStats playerStats;
     private Vector3 shootDirection;
     private bool attackOnCooldown;
 
+
+    private void Awake() {
+        playerStats = GetComponent<PlayerStats>();
+    }
 
     private void Start() {
         InputManager.Instance.OnAttackAction += HandleAttackAction;
@@ -35,7 +40,8 @@ public class PlayerAttack : MonoBehaviour {
     private IEnumerator AttackCooldown() {
         attackOnCooldown = true;
 
-        yield return new WaitForSeconds(Player.Instance.GetCurrentWeapon().reloadTime);
+        float attackCooldown = playerStats.GetAttackSpeed(Player.Instance.GetCurrentWeapon().reloadTime);
+        yield return new WaitForSeconds(attackCooldown);
 
         attackOnCooldown = false;
     }

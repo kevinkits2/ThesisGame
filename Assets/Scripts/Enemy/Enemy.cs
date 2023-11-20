@@ -9,7 +9,6 @@ public class Enemy : MonoBehaviour {
     [SerializeField] private EnemySO enemySO;
 
     [SerializeField] private float enemyMoveSpeed;
-    [SerializeField] private float experiencePointsOnDeath;
 
 
     private void Awake() {
@@ -27,6 +26,6 @@ public class Enemy : MonoBehaviour {
     }
 
     public float GetExperiencePointsOnDeath() {
-        return experiencePointsOnDeath;
+        return enemySO.experiencePointsOnDeath;
     }
 }

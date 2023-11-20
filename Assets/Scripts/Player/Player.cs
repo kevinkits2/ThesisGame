@@ -8,6 +8,7 @@ public class Player : MonoBehaviour {
     public static Player Instance { get; private set; }
 
     public event Action<int> OnTakeDamage;
+    public event Action<PlayerLevelRewardsSO> OnLevelUp;
 
     [SerializeField] private WeaponSO defaultPlayerWeapon;
     [SerializeField] private Transform weaponContainer;
@@ -16,8 +17,7 @@ public class Player : MonoBehaviour {
     private PlayerMovement playerMovementComponent;
     private PlayerDashGhostingEffect playerDashGhostingEffect;
     private PlayerHealth playerHealth;
-
-    private float experiencePoints;
+    private PlayerStats playerStats;
 
 
     private void Awake() {
@@ -34,7 +34,17 @@ public class Player : MonoBehaviour {
         playerHealth = GetComponent<PlayerHealth>();
         playerHealth.OnTakeDamage += HandleTakeDamage;
 
+        playerStats = GetComponent<PlayerStats>();
+
         EquipWeapon(defaultPlayerWeapon);
+    }
+
+    private void Start() {
+        playerStats.OnLevelUp += HandleOnLevelUp;
+    }
+
+    private void HandleOnLevelUp(PlayerLevelRewardsSO obj) {
+        OnLevelUp.Invoke(obj);
     }
 
     private void HandleTakeDamage(int obj) => OnTakeDamage.Invoke(obj);
@@ -43,10 +53,6 @@ public class Player : MonoBehaviour {
         Instantiate(weapon.weaponPrefab, weaponContainer);
 
         currentWeapon = weapon;
-    }
-
-    public void ReceiveExperiencePoints(float amount) {
-        experiencePoints += amount;
     }
 
     public bool IsMoving() => playerMovementComponent.IsMoving();
@@ -72,5 +78,14 @@ public class Player : MonoBehaviour {
     }
 
     public int GetMaxHealth() => playerHealth.GetMaxHealth();
+
     public int GetCurrentHealth() => playerHealth.GetCurrentHealth();
+
+    public void GainExperiencePoints(float points) => playerStats.GainExperiencePoints(points);
+
+    public int GetAvailableStatPoints() => playerStats.GetAvailableStatPoints();
+
+    public int GetStrength() => playerStats.Strength;
+    public int GetDexterity() => playerStats.Dexterity;
+    public int GetWisdom() => playerStats.Wisdom;
 }

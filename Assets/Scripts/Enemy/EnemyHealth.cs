@@ -6,8 +6,6 @@ using UnityEngine;
 [RequireComponent(typeof(DamageFlash))]
 public class EnemyHealth : MonoBehaviour, IDamageable {
 
-    public event EventHandler OnTakeDamage;
-
     [SerializeField] private int maxHealth;
 
     private Enemy enemy;
@@ -27,9 +25,9 @@ public class EnemyHealth : MonoBehaviour, IDamageable {
         damageFlash.CallDamageFlash();
 
         if (currentHealth <= 0) {
+            Player.Instance.GainExperiencePoints(enemy.GetExperiencePointsOnDeath());
+
             Destroy(gameObject);
         }
-
-        OnTakeDamage.Invoke(this, EventArgs.Empty);
     }
 }

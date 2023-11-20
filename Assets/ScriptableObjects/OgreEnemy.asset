@@ -17,4 +17,4 @@ MonoBehaviour:
   particleAttack: {fileID: 11400000, guid: 865aee1cc29d91343928fcff5bd52ef7, type: 2}
   enemyMaxHealth: 50
   enemyMoveSpeed: 5
-  experiencePointsOnDeath: 10
+  experiencePointsOnDeath: 400

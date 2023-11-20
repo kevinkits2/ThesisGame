@@ -24,8 +24,6 @@ public class GameUIManager : MonoBehaviour {
         }
 
         Instance = this;
-
-        playerSkillTreeContainer.SetActive(false);
     }
 
     private void Start() {
@@ -35,6 +33,9 @@ public class GameUIManager : MonoBehaviour {
         skillTreeUI.OnSkillButtonClicked += HandleSkillButtonClicked;
 
         InputManager.Instance.OnStatsAction += HandleStatsAction;
+
+        playerSkillTreeContainer.SetActive(false);
+        playerStatsContainer.SetActive(false);
     }
 
     private void HandleStatsAction(object sender, EventArgs e) {
