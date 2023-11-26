@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -36,15 +37,15 @@ public class InputManager : MonoBehaviour {
     }
 
     private void HandleStatsPerformed(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
-        OnStatsAction.Invoke(this, EventArgs.Empty);
+        OnStatsAction?.Invoke(this, EventArgs.Empty);
     }
 
     private void HandleSkillTreePerfromed(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
-        OnSkillTreeAction.Invoke(this, EventArgs.Empty);
+        OnSkillTreeAction?.Invoke(this, EventArgs.Empty);
     }
 
     private void HandleDashPerformed(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
-        OnDashAction.Invoke(this, EventArgs.Empty);
+        OnDashAction?.Invoke(this, EventArgs.Empty);
     }
 
     private void HandleAttackCanceled(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
@@ -74,6 +75,7 @@ public class InputManager : MonoBehaviour {
 
     public Vector3 GetMouseWorldPosition() {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
         mousePosition.z = 0f;
 
         return mousePosition;

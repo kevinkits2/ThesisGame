@@ -44,13 +44,14 @@ public class Player : MonoBehaviour {
     }
 
     private void HandleOnLevelUp(PlayerLevelRewardsSO obj) {
-        OnLevelUp.Invoke(obj);
+        OnLevelUp?.Invoke(obj);
     }
 
-    private void HandleTakeDamage(int obj) => OnTakeDamage.Invoke(obj);
+    private void HandleTakeDamage(int obj) => OnTakeDamage?.Invoke(obj);
 
     private void EquipWeapon(WeaponSO weapon) {
-        Instantiate(weapon.weaponPrefab, weaponContainer);
+        GameObject instantiatedWeapon = Instantiate(weapon.weaponPrefab, weaponContainer);
+        instantiatedWeapon.transform.position = weapon.weaponSpawnOffset;
 
         currentWeapon = weapon;
     }
@@ -86,6 +87,12 @@ public class Player : MonoBehaviour {
     public int GetAvailableStatPoints() => playerStats.GetAvailableStatPoints();
 
     public int GetStrength() => playerStats.Strength;
+
     public int GetDexterity() => playerStats.Dexterity;
+
     public int GetWisdom() => playerStats.Wisdom;
+
+    public Transform GetWeaponContainer() {
+        return weaponContainer;
+    }
 }

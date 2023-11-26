@@ -31,7 +31,7 @@ public class EnemyTargetScanner : MonoBehaviour {
         if (scanTimer < scanFrequency) return;
 
         if (Vector2.Distance(Player.Instance.transform.position, transform.position) <= targetScanRadius) {
-            OnTargetFound.Invoke(Player.Instance.transform);
+            OnTargetFound?.Invoke(Player.Instance.transform);
 
             targetFound = true;
             scanTimer = 0f;
@@ -44,7 +44,7 @@ public class EnemyTargetScanner : MonoBehaviour {
         if (scanTimer < scanFrequency) return;
 
         if (Vector2.Distance(Player.Instance.transform.position, transform.position) > targetScanRadius) {
-            OnTargetLost.Invoke();
+            OnTargetLost?.Invoke();
 
             targetFound = false;
             scanTimer = 0f;

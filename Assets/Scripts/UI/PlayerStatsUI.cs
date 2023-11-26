@@ -34,7 +34,7 @@ public class PlayerStatsUI : MonoBehaviour {
         strengthIncreaseButton.onClick.AddListener(() => {
             if (Player.Instance.GetAvailableStatPoints() <= 0) return;
 
-            OnPlayerStatIncreased.Invoke(PlayerStat.Strength, () => {
+            OnPlayerStatIncreased?.Invoke(PlayerStat.Strength, () => {
                 availablePointsNumber.text = Player.Instance.GetAvailableStatPoints().ToString();
             });
 
@@ -44,7 +44,7 @@ public class PlayerStatsUI : MonoBehaviour {
         dexterityIncreaseButton.onClick.AddListener(() => {
             if (Player.Instance.GetAvailableStatPoints() <= 0) return;
 
-            OnPlayerStatIncreased.Invoke(PlayerStat.Dexterity, () => {
+            OnPlayerStatIncreased?.Invoke(PlayerStat.Dexterity, () => {
                 availablePointsNumber.text = Player.Instance.GetAvailableStatPoints().ToString();
             });
 
@@ -54,7 +54,7 @@ public class PlayerStatsUI : MonoBehaviour {
         wisdomIncreaseButton.onClick.AddListener(() => {
             if (Player.Instance.GetAvailableStatPoints() <= 0) return;
 
-            OnPlayerStatIncreased.Invoke(PlayerStat.Wisdom, () => {
+            OnPlayerStatIncreased?.Invoke(PlayerStat.Wisdom, () => {
                 availablePointsNumber.text = Player.Instance.GetAvailableStatPoints().ToString();
             });
 

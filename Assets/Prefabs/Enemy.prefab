@@ -55,9 +55,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 052a7c8f14e525e4c9d7620f887bb748, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemySO: {fileID: 0}
+  enemySO: {fileID: 11400000, guid: 6999875be53cc1845a8cf72186f13d86, type: 2}
   enemyMoveSpeed: 200
-  experiencePointsOnDeath: 0
 --- !u!114 &5094953080651973706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,7 +172,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31a6dcd3b2ed17a44a975d2c629a4901, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  particleAttack: {fileID: 0}
 --- !u!50 &6230871709901850460
 Rigidbody2D:
   serializedVersion: 4
@@ -197,7 +195,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4

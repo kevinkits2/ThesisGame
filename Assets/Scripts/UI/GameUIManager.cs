@@ -48,7 +48,7 @@ public class GameUIManager : MonoBehaviour {
     }
 
     private void HandleSkillButtonClicked(PlayerSkillSO obj) {
-        OnSkillButtonClicked.Invoke(obj);
+        OnSkillButtonClicked?.Invoke(obj);
     }
 
     private void HandleSkillTreeAction(object sender, System.EventArgs e) {

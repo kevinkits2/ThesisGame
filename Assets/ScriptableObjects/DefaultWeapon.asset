@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bbef9fc76eff374ba95589734ccd40e, type: 3}
   m_Name: DefaultWeapon
   m_EditorClassIdentifier: 
+  hasProjectiles: 0
   weaponPrefab: {fileID: 179556374103973302, guid: 7542d183a533562489bdeba7f4bcb08a, type: 3}
-  projectileSO: {fileID: 11400000, guid: 6c24a18e6c4a94543a8dc3ada6696b9d, type: 2}
+  weaponSpawnOffset: {x: 0.75, y: 0, z: 0}
+  projectileSO: {fileID: 0}
   weaponDamage: 10
   reloadTime: 1

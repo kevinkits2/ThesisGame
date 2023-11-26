@@ -45,7 +45,9 @@ public class PlayerMovement : MonoBehaviour {
 
     private void Update() {
         GetMoveVector();
+    }
 
+    private void FixedUpdate() {
         if (!isDashing) {
             Move();
         }
@@ -55,7 +57,7 @@ public class PlayerMovement : MonoBehaviour {
         // Old movement
         //transform.position += moveVectorNormalized * Time.deltaTime * playerMoveSpeed;
 
-        playerRigibody.velocity = new Vector2(moveVectorNormalized.x, moveVectorNormalized.y) * playerMoveSpeed * Time.deltaTime;
+        playerRigibody.velocity = new Vector2(moveVectorNormalized.x, moveVectorNormalized.y) * playerMoveSpeed;
     }
 
     private void GetMoveVector() {
@@ -79,7 +81,7 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private IEnumerator Dash() {
-        OnDash.Invoke(this, new OnDashEventArgs(playerDashCooldown));
+        OnDash?.Invoke(this, new OnDashEventArgs(playerDashCooldown));
 
         isMoving = false;
         isDashing = true;

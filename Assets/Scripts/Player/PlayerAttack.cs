@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour {
 
+    private const string WEAPON_ATTACK = "Attack";
+
+    private Animator weaponAnimator;
     private PlayerStats playerStats;
     private Vector3 shootDirection;
     private bool attackOnCooldown;
+    private WeaponSO currentWeapon;
 
 
     private void Awake() {
@@ -15,6 +19,8 @@ public class PlayerAttack : MonoBehaviour {
 
     private void Start() {
         InputManager.Instance.OnAttackAction += HandleAttackAction;
+        currentWeapon = Player.Instance.GetCurrentWeapon();
+        weaponAnimator = Player.Instance.GetWeaponContainer().GetComponentInChildren<Animator>();
     }
 
     private void Update() {
@@ -24,8 +30,12 @@ public class PlayerAttack : MonoBehaviour {
     private void HandleAttackAction(object sender, System.EventArgs e) {
         if (attackOnCooldown) return;
 
-        Vector3 shootOrigin = Player.Instance.GetWeaponShootOrigin();
-        Player.Instance.GetCurrentWeapon().Shoot(shootOrigin, shootDirection);
+        if (currentWeapon.hasProjectiles) {
+            Vector3 shootOrigin = Player.Instance.GetWeaponShootOrigin();
+            Player.Instance.GetCurrentWeapon().Shoot(shootOrigin, shootDirection);
+        }
+
+        weaponAnimator.SetTrigger(WEAPON_ATTACK);
 
         StartCoroutine(AttackCooldown());
     }
@@ -40,7 +50,7 @@ public class PlayerAttack : MonoBehaviour {
     private IEnumerator AttackCooldown() {
         attackOnCooldown = true;
 
-        float attackCooldown = playerStats.GetAttackSpeed(Player.Instance.GetCurrentWeapon().reloadTime);
+        float attackCooldown = playerStats.GetAttackSpeed(currentWeapon.reloadTime);
         yield return new WaitForSeconds(attackCooldown);
 
         attackOnCooldown = false;

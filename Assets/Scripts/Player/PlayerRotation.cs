@@ -14,10 +14,12 @@ public class PlayerRotation : MonoBehaviour {
         lookDirection.Normalize();
 
         if (lookDirection.x < 0) {
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, PLAYER_LOOK_LEFT_ROTATION, transform.eulerAngles.z);
+            transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, PLAYER_LOOK_LEFT_ROTATION, 
+                transform.localEulerAngles.z);
         }
         else {
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, PLAYER_LOOK_RIGHT_ROTATION, transform.eulerAngles.z);
+            transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, PLAYER_LOOK_RIGHT_ROTATION, 
+                transform.localEulerAngles.z);
         }
     }
 }

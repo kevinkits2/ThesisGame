@@ -31,7 +31,7 @@ public class SkillTreeUI : MonoBehaviour {
             skillButtonUI.OnPointerOffButton += SkillButtonUI_OnPointerOffButton;
 
             button.onClick.AddListener(() => {
-                OnSkillButtonClicked.Invoke(skillButtonUI.GetPlayerSkillSO());
+                OnSkillButtonClicked?.Invoke(skillButtonUI.GetPlayerSkillSO());
             });
         }
     }

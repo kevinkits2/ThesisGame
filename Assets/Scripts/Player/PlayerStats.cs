@@ -36,7 +36,7 @@ public class PlayerStats : MonoBehaviour {
 
     private void Start() {
         PlayerStatsUI.Instance.OnPlayerStatIncreased += HandlePlayerStatIncreased;
-        OnLevelUp.Invoke(GetPlayerLevel().rewards);
+        OnLevelUp?.Invoke(GetPlayerLevel().rewards);
     }
 
     private void HandlePlayerStatIncreased(PlayerStat stat, Action callback) {
@@ -68,7 +68,7 @@ public class PlayerStats : MonoBehaviour {
         if (GetPlayerLevel().experienceToNextLevel <= experiencePoints) {
             currentLevel++;
             currentAvailableStatPoints += GetPlayerLevel().rewards.statPointsGained;
-            OnLevelUp.Invoke(GetPlayerLevel().rewards);
+            OnLevelUp?.Invoke(GetPlayerLevel().rewards);
         }
     }
 

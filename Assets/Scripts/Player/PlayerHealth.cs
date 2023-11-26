@@ -24,7 +24,7 @@ public class PlayerHealth : MonoBehaviour {
         currentHealth -= damage;
         damageFlash.CallDamageFlash();
 
-        OnTakeDamage.Invoke(damage);
+        OnTakeDamage?.Invoke(damage);
 
         if (currentHealth <= 0) {
             Destroy(gameObject);

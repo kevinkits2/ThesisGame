@@ -5,7 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Weapon")]
 public class WeaponSO : ScriptableObject {
 
+    public bool hasProjectiles;
     public GameObject weaponPrefab;
+    public Vector3 weaponSpawnOffset;
     public ProjectileSO projectileSO;
     public int weaponDamage;
     public float reloadTime;

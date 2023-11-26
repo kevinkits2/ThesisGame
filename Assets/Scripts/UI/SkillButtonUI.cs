@@ -27,10 +27,10 @@ public class SkillButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
-        OnPointerOnButton.Invoke(playerSkillSO);
+        OnPointerOnButton?.Invoke(playerSkillSO);
     }
 
     public void OnPointerExit(PointerEventData eventData) {
-        OnPointerOffButton.Invoke();
+        OnPointerOffButton?.Invoke();
     }
 }

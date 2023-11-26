@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(ParticleSystem))]
 public class EnemyParticleAttackDamage : MonoBehaviour {
 
     private ParticleSystem particleSys;
