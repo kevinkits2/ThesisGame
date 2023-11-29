@@ -18,6 +18,7 @@ public class Player : MonoBehaviour {
     private PlayerDashGhostingEffect playerDashGhostingEffect;
     private PlayerHealth playerHealth;
     private PlayerStats playerStats;
+    private PlayerShieldSkill playerShieldSkill;
 
 
     private void Awake() {
@@ -35,6 +36,7 @@ public class Player : MonoBehaviour {
         playerHealth.OnTakeDamage += HandleTakeDamage;
 
         playerStats = GetComponent<PlayerStats>();
+        playerShieldSkill = GetComponent<PlayerShieldSkill>();
 
         EquipWeapon(defaultPlayerWeapon);
     }
@@ -91,6 +93,10 @@ public class Player : MonoBehaviour {
     public int GetDexterity() => playerStats.Dexterity;
 
     public int GetWisdom() => playerStats.Wisdom;
+
+    public CircleCollider2D GetShieldCollider() => playerShieldSkill.GetShieldCollider();
+
+    public bool IsShieldActive() => playerShieldSkill.IsShieldActive();
 
     public Transform GetWeaponContainer() {
         return weaponContainer;

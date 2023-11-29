@@ -52,4 +52,12 @@ public class PlayerShieldSkill : MonoBehaviour {
 
         cooldownCoroutine = null;
     }
+
+    public bool IsShieldActive() {
+        return playerShield.activeSelf;
+    }
+
+    public CircleCollider2D GetShieldCollider() {
+        return playerShield.GetComponent<CircleCollider2D>();
+    }
 }

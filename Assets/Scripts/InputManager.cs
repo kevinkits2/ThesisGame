@@ -12,6 +12,8 @@ public class InputManager : MonoBehaviour {
     public event EventHandler OnAttackAction;
     public event EventHandler OnSkillTreeAction;
     public event EventHandler OnStatsAction;
+    public event EventHandler OnFallingSwordsAction;
+
     private bool attackActionHeldDown;
 
     private PlayerControls playerControls;
@@ -34,6 +36,12 @@ public class InputManager : MonoBehaviour {
 
         playerControls.UI.SkillTree.performed += HandleSkillTreePerfromed;
         playerControls.UI.Stats.performed += HandleStatsPerformed;
+
+        playerControls.Skill.FallingSwords.performed += HandleFallingSwordsPerformed;
+    }
+
+    private void HandleFallingSwordsPerformed(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
+        OnFallingSwordsAction?.Invoke(this, EventArgs.Empty);
     }
 
     private void HandleStatsPerformed(UnityEngine.InputSystem.InputAction.CallbackContext obj) {

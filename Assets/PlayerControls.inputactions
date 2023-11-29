@@ -160,6 +160,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Skill",
+            "id": "0ba6be3f-9de3-4162-a4c0-51c3b7cdb4ec",
+            "actions": [
+                {
+                    "name": "FallingSwords",
+                    "type": "Button",
+                    "id": "05763c8d-2fc4-42be-b3b5-331937d14466",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b18c8402-0fdd-4d42-a4ba-4a8edc7c0aff",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "FallingSwords",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

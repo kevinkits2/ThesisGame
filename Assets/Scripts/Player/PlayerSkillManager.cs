@@ -5,12 +5,17 @@ using UnityEngine;
 public class PlayerSkillManager : MonoBehaviour {
 
     private List<SkillType> activeSkills = new();
+
     private PlayerShieldSkill playerShieldSkillComponent;
+    private PlayerFallingSwordsSkill playerFallingSwordsSkillComponent;
 
 
     private void Awake() {
         playerShieldSkillComponent = GetComponent<PlayerShieldSkill>();
         playerShieldSkillComponent.enabled = false;
+
+        playerFallingSwordsSkillComponent = GetComponent<PlayerFallingSwordsSkill>();
+        playerFallingSwordsSkillComponent.enabled = false;
     }
 
     private void Start() {
@@ -32,6 +37,12 @@ public class PlayerSkillManager : MonoBehaviour {
                 playerShieldSkillComponent.enabled = true;
                 playerShieldSkillComponent.Init(skill.skillDuration, skill.skillCooldownTime);
 
+                break;
+
+            case SkillType.FallingSwords:
+                playerFallingSwordsSkillComponent.enabled = true;
+                playerFallingSwordsSkillComponent.Init(skill.skillCooldownTime, skill.skillDamage, skill.prefabLifetime, 
+                    skill.skillSpawnPrefab);
                 break;
         }
     }

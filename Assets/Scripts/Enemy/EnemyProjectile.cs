@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyProjectile : MonoBehaviour {
 
     [SerializeField] private LayerMask wallLayer;
+    [SerializeField] private LayerMask shieldLayer;
 
     private float projectileSpeed;
     private int projectileDamage;
@@ -31,6 +32,11 @@ public class EnemyProjectile : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if ((wallLayer.value & (1 << collision.transform.gameObject.layer)) > 0) {
+            Destroy(gameObject);
+            return;
+        }
+
+        if ((shieldLayer.value & (1 << collision.transform.gameObject.layer)) > 0) {
             Destroy(gameObject);
             return;
         }

@@ -182,6 +182,34 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Skill"",
+            ""id"": ""0ba6be3f-9de3-4162-a4c0-51c3b7cdb4ec"",
+            ""actions"": [
+                {
+                    ""name"": ""FallingSwords"",
+                    ""type"": ""Button"",
+                    ""id"": ""05763c8d-2fc4-42be-b3b5-331937d14466"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""b18c8402-0fdd-4d42-a4ba-4a8edc7c0aff"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FallingSwords"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -195,6 +223,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_SkillTree = m_UI.FindAction("SkillTree", throwIfNotFound: true);
         m_UI_Stats = m_UI.FindAction("Stats", throwIfNotFound: true);
+        // Skill
+        m_Skill = asset.FindActionMap("Skill", throwIfNotFound: true);
+        m_Skill_FallingSwords = m_Skill.FindAction("FallingSwords", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -368,6 +399,52 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         }
     }
     public UIActions @UI => new UIActions(this);
+
+    // Skill
+    private readonly InputActionMap m_Skill;
+    private List<ISkillActions> m_SkillActionsCallbackInterfaces = new List<ISkillActions>();
+    private readonly InputAction m_Skill_FallingSwords;
+    public struct SkillActions
+    {
+        private @PlayerControls m_Wrapper;
+        public SkillActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @FallingSwords => m_Wrapper.m_Skill_FallingSwords;
+        public InputActionMap Get() { return m_Wrapper.m_Skill; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(SkillActions set) { return set.Get(); }
+        public void AddCallbacks(ISkillActions instance)
+        {
+            if (instance == null || m_Wrapper.m_SkillActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_SkillActionsCallbackInterfaces.Add(instance);
+            @FallingSwords.started += instance.OnFallingSwords;
+            @FallingSwords.performed += instance.OnFallingSwords;
+            @FallingSwords.canceled += instance.OnFallingSwords;
+        }
+
+        private void UnregisterCallbacks(ISkillActions instance)
+        {
+            @FallingSwords.started -= instance.OnFallingSwords;
+            @FallingSwords.performed -= instance.OnFallingSwords;
+            @FallingSwords.canceled -= instance.OnFallingSwords;
+        }
+
+        public void RemoveCallbacks(ISkillActions instance)
+        {
+            if (m_Wrapper.m_SkillActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ISkillActions instance)
+        {
+            foreach (var item in m_Wrapper.m_SkillActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_SkillActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public SkillActions @Skill => new SkillActions(this);
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -378,5 +455,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     {
         void OnSkillTree(InputAction.CallbackContext context);
         void OnStats(InputAction.CallbackContext context);
+    }
+    public interface ISkillActions
+    {
+        void OnFallingSwords(InputAction.CallbackContext context);
     }
 }

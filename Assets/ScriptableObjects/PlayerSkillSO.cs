@@ -13,6 +13,9 @@ public class PlayerSkillSO : ScriptableObject {
     public bool skillUnlocked;
     public bool skillAvailableToUnlock;
 
+    public GameObject skillSpawnPrefab;
+    public float prefabLifetime;
+    public int skillDamage;
     public float skillCooldownTime;
     public float skillDuration;
 
@@ -20,4 +23,5 @@ public class PlayerSkillSO : ScriptableObject {
 
 public enum SkillType {
     Shield,
+    FallingSwords,
 }

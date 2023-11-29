@@ -21,6 +21,8 @@ public class PlayerHealth : MonoBehaviour {
     }
 
     public void TakeDamage(int damage) {
+        if (Player.Instance.IsShieldActive()) return;
+
         currentHealth -= damage;
         damageFlash.CallDamageFlash();
 
