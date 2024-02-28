@@ -18,18 +18,27 @@ public class PlayerMovement : MonoBehaviour {
 
     [SerializeField] private float playerMoveSpeed;
     [SerializeField] private float playerDashPower;
+    [SerializeField] private float empoweredDashPower;
     [SerializeField] private float playerDashingTime;
     [SerializeField] private float playerDashCooldown;
 
+    private PlayerSkillSO empoweredDashSkill;
     private Rigidbody2D playerRigibody;
+    private Collider2D playerCollider;
+    private Knockback knockback;
     private Vector2 moveVectorNormalized;
     private bool isMoving;
     private bool isDashing;
+    private bool isEmpoweredDashing;
     private bool dashOnCooldown;
+    private bool dashPoweredUp;
+    private bool empoweredDashOnCooldown;
 
 
     private void Awake() {
         playerRigibody = GetComponent<Rigidbody2D>();
+        playerCollider = GetComponent<Collider2D>();
+        knockback = GetComponent<Knockback>();
     }
 
     private void Start() {
@@ -39,8 +48,14 @@ public class PlayerMovement : MonoBehaviour {
     private void HandleDashAction(object sender, System.EventArgs e) {
         if (dashOnCooldown || isDashing) return;
         if (moveVectorNormalized.sqrMagnitude <= 0) return;
+        if (knockback.GettingKnockedBack) return;
 
-        StartCoroutine(Dash());
+        if (empoweredDashOnCooldown || !dashPoweredUp) {
+            StartCoroutine(Dash());
+        }
+        else {
+            StartCoroutine(EmpoweredDash());
+        }
     }
 
     private void Update() {
@@ -48,15 +63,12 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-        if (!isDashing) {
+        if (!isDashing && !knockback.GettingKnockedBack) {
             Move();
         }
     }
 
     private void Move() {
-        // Old movement
-        //transform.position += moveVectorNormalized * Time.deltaTime * playerMoveSpeed;
-
         playerRigibody.velocity = new Vector2(moveVectorNormalized.x, moveVectorNormalized.y) * playerMoveSpeed;
     }
 
@@ -100,11 +112,59 @@ public class PlayerMovement : MonoBehaviour {
         dashOnCooldown = false;
     }
 
+    private IEnumerator EmpoweredDash() {
+        OnDash?.Invoke(this, new OnDashEventArgs(playerDashCooldown));
+
+        isMoving = false;
+        isDashing = true;
+        isEmpoweredDashing = true;
+        SetColliderToTrigger();
+        playerRigibody.velocity = moveVectorNormalized * empoweredDashPower;
+        PlayDashGhostEffect();
+
+        yield return new WaitForSeconds(playerDashingTime * 2);
+
+        playerRigibody.velocity = Vector2.zero;
+        StopDashGhostEffect();
+        RemoveColliderTrigger();
+        isMoving = true;
+        isDashing = false;
+        isEmpoweredDashing = false;
+        empoweredDashOnCooldown = true;
+
+        yield return new WaitForSeconds(empoweredDashSkill.skillCooldownTime);
+        empoweredDashOnCooldown = false;
+    }
+
     private void PlayDashGhostEffect() {
         Player.Instance.PlayDashGhostEffect();
     }
 
     private void StopDashGhostEffect() {
         Player.Instance.StopDashGhostEffect();
+    }
+
+    private void SetColliderToTrigger() {
+        playerCollider.isTrigger = true;
+    }
+
+    private void RemoveColliderTrigger() {
+        playerCollider.isTrigger = false;
+    }
+
+    public void PowerUpDash(PlayerSkillSO skill) {
+        dashPoweredUp = true;
+        empoweredDashSkill = skill;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if (!isEmpoweredDashing) return;
+
+        if (collision.gameObject.TryGetComponent<IBreakable>(out IBreakable breakable)) {
+            breakable.Break();
+        }
+        if (collision.gameObject.TryGetComponent<IDamageable>(out IDamageable damageable)) {
+            damageable.TakeDamage(empoweredDashSkill.skillDamage);
+        }
     }
 }

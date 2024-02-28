@@ -2,56 +2,56 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAttack : MonoBehaviour {
+public class PlayerAttack : Singleton<PlayerAttack> {
 
-    private const string WEAPON_ATTACK = "Attack";
+    public MonoBehaviour CurrentActiveWeapon { get; private set; }
 
-    private Animator weaponAnimator;
+    [SerializeField] private WeaponSO defaultWeapon;
+    [SerializeField] private Transform weaponContainer;
+    [SerializeField] private GameObject weaponHitbox;
+
     private PlayerStats playerStats;
-    private Vector3 shootDirection;
     private bool attackOnCooldown;
-    private WeaponSO currentWeapon;
 
 
-    private void Awake() {
+    protected override void Awake() {
+        base.Awake();
+
         playerStats = GetComponent<PlayerStats>();
     }
 
     private void Start() {
         InputManager.Instance.OnAttackAction += HandleAttackAction;
-        currentWeapon = Player.Instance.GetCurrentWeapon();
-        weaponAnimator = Player.Instance.GetWeaponContainer().GetComponentInChildren<Animator>();
+        EquipWeapon(defaultWeapon);
     }
 
-    private void Update() {
-        GetShootDirectionFromPlayerNormalized();
+    public void EquipWeapon(WeaponSO weaponSO) {
+        GameObject newWeapon = Instantiate(weaponSO.weaponPrefab, weaponContainer);
+        CurrentActiveWeapon = newWeapon.GetComponent<MonoBehaviour>();
+
+        PlayerDamageSource playerDamageSource = weaponHitbox.GetComponent<PlayerDamageSource>();
+        playerDamageSource.UpdateDamageSource((CurrentActiveWeapon as IWeapon).GetWeaponSO());
+    }
+
+    public Transform GetWeaponContainer() {
+        return weaponContainer;
+    }
+
+    public GameObject GetWeaponHitbox() {
+        return weaponHitbox;
     }
 
     private void HandleAttackAction(object sender, System.EventArgs e) {
         if (attackOnCooldown) return;
 
-        if (currentWeapon.hasProjectiles) {
-            Vector3 shootOrigin = Player.Instance.GetWeaponShootOrigin();
-            Player.Instance.GetCurrentWeapon().Shoot(shootOrigin, shootDirection);
-        }
-
-        weaponAnimator.SetTrigger(WEAPON_ATTACK);
-
+        (CurrentActiveWeapon as IWeapon).Attack();
         StartCoroutine(AttackCooldown());
-    }
-
-    private void GetShootDirectionFromPlayerNormalized() {
-        Vector3 mousePosition = InputManager.Instance.GetMouseWorldPosition();
-
-        shootDirection = mousePosition - transform.position;
-        shootDirection.Normalize();
     }
 
     private IEnumerator AttackCooldown() {
         attackOnCooldown = true;
 
-        float attackCooldown = playerStats.GetAttackSpeed(currentWeapon.reloadTime);
-        yield return new WaitForSeconds(attackCooldown);
+        yield return new WaitForSeconds((CurrentActiveWeapon as IWeapon).GetWeaponSO().attackCooldown);
 
         attackOnCooldown = false;
     }

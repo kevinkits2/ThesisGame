@@ -8,7 +8,7 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - CinemachineConfiner
   - Water
   - UI
   - AttackRadius
@@ -40,4 +40,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 274681473
+    locked: 0
+  - name: Foreground
+    uniqueID: 1929213777
     locked: 0

@@ -4,9 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputManager : MonoBehaviour {
-
-    public static InputManager Instance { get; private set; }
+public class InputManager : Singleton<InputManager> {
 
     public event EventHandler OnDashAction;
     public event EventHandler OnAttackAction;
@@ -19,12 +17,8 @@ public class InputManager : MonoBehaviour {
     private PlayerControls playerControls;
 
 
-    private void Awake() {
-        if (Instance != null) {
-            return;
-        }
-
-        Instance = this;
+    protected override void Awake() {
+        base.Awake();
 
         playerControls = new PlayerControls();
         playerControls.Enable();

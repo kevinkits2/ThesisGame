@@ -6,11 +6,14 @@ public class PlayerSkillManager : MonoBehaviour {
 
     private List<SkillType> activeSkills = new();
 
+    private PlayerMovement playerMovementComponent;
     private PlayerShieldSkill playerShieldSkillComponent;
     private PlayerFallingSwordsSkill playerFallingSwordsSkillComponent;
 
 
     private void Awake() {
+        playerMovementComponent = GetComponent<PlayerMovement>();
+
         playerShieldSkillComponent = GetComponent<PlayerShieldSkill>();
         playerShieldSkillComponent.enabled = false;
 
@@ -43,6 +46,10 @@ public class PlayerSkillManager : MonoBehaviour {
                 playerFallingSwordsSkillComponent.enabled = true;
                 playerFallingSwordsSkillComponent.Init(skill.skillCooldownTime, skill.skillDamage, skill.prefabLifetime, 
                     skill.skillSpawnPrefab);
+                break;
+
+            case SkillType.EmpoweredDash:
+                playerMovementComponent.PowerUpDash(skill);
                 break;
         }
     }

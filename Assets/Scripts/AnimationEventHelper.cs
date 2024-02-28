@@ -11,4 +11,8 @@ public class AnimationEventHelper : MonoBehaviour {
     public void TriggerAttackPerformed() {
         OnAttackPerformed?.Invoke(this, EventArgs.Empty);
     }
+
+    public void DestroyOnAnimationFinished() {
+        Destroy(gameObject);
+    }
 }

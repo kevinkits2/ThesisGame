@@ -3,17 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour {
-
-    public static Player Instance { get; private set; }
+public class Player : Singleton<Player> {
 
     public event Action<int> OnTakeDamage;
     public event Action<PlayerLevelRewardsSO> OnLevelUp;
 
-    [SerializeField] private WeaponSO defaultPlayerWeapon;
-    [SerializeField] private Transform weaponContainer;
-
-    private WeaponSO currentWeapon;
     private PlayerMovement playerMovementComponent;
     private PlayerDashGhostingEffect playerDashGhostingEffect;
     private PlayerHealth playerHealth;
@@ -21,12 +15,8 @@ public class Player : MonoBehaviour {
     private PlayerShieldSkill playerShieldSkill;
 
 
-    private void Awake() {
-        if (Instance != null) {
-            return;
-        }
-
-        Instance = this;
+    protected override void Awake() {
+        base.Awake();
 
         playerMovementComponent = GetComponent<PlayerMovement>();
         playerDashGhostingEffect = GetComponent<PlayerDashGhostingEffect>();
@@ -37,8 +27,6 @@ public class Player : MonoBehaviour {
 
         playerStats = GetComponent<PlayerStats>();
         playerShieldSkill = GetComponent<PlayerShieldSkill>();
-
-        EquipWeapon(defaultPlayerWeapon);
     }
 
     private void Start() {
@@ -50,13 +38,6 @@ public class Player : MonoBehaviour {
     }
 
     private void HandleTakeDamage(int obj) => OnTakeDamage?.Invoke(obj);
-
-    private void EquipWeapon(WeaponSO weapon) {
-        GameObject instantiatedWeapon = Instantiate(weapon.weaponPrefab, weaponContainer);
-        instantiatedWeapon.transform.position = weapon.weaponSpawnOffset;
-
-        currentWeapon = weapon;
-    }
 
     public bool IsMoving() => playerMovementComponent.IsMoving();
 
@@ -70,14 +51,6 @@ public class Player : MonoBehaviour {
 
     public PlayerMovement GetMovementComponent() {
         return playerMovementComponent;
-    }
-
-    public WeaponSO GetCurrentWeapon() {
-        return currentWeapon;
-    }
-
-    public Vector3 GetWeaponShootOrigin() {
-        return weaponContainer.transform.position;
     }
 
     public int GetMaxHealth() => playerHealth.GetMaxHealth();
@@ -97,8 +70,4 @@ public class Player : MonoBehaviour {
     public CircleCollider2D GetShieldCollider() => playerShieldSkill.GetShieldCollider();
 
     public bool IsShieldActive() => playerShieldSkill.IsShieldActive();
-
-    public Transform GetWeaponContainer() {
-        return weaponContainer;
-    }
 }

@@ -43,7 +43,7 @@ public class EnemyProjectile : MonoBehaviour {
 
         if (!collision.gameObject.TryGetComponent<PlayerHealth>(out PlayerHealth playerHealth)) return;
 
-        playerHealth.TakeDamage(projectileDamage);
+        playerHealth.TakeDamage(projectileDamage, transform);
         Destroy(gameObject);
     }
 }

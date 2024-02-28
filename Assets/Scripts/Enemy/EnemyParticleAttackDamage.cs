@@ -27,7 +27,7 @@ public class EnemyParticleAttackDamage : MonoBehaviour {
         for (int i = 0; i < numCollisionEvents; i++) {
             if (!collisionEvents[i].colliderComponent.gameObject.TryGetComponent<PlayerHealth>(out PlayerHealth playerHealth)) continue;
 
-            playerHealth.TakeDamage(particleDamage);
+            playerHealth.TakeDamage(particleDamage, transform);
         }
     }
 

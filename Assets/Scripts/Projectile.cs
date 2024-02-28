@@ -4,39 +4,73 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour {
 
-    [SerializeField] private LayerMask wallLayer;
-    [SerializeField] private float projectileSpeed;
-    [SerializeField] private int projectileDamage;
+    [SerializeField] private GameObject particleOnHitPrefabVFX;
+    [SerializeField] private float moveSpeed = 22f;
+    [SerializeField] private bool isEnemyProjectile = false;
+    [SerializeField] private float projectileRange = 10f;
 
-    private bool isAwake;
-    private Vector3 direction;
+    private Vector3 startPosition;
 
 
-    public void Init(Vector3 direction, float projectileSpeed, int projectileDamage, float lifeTime = 5f) {
-        isAwake = true;
-        this.direction = direction;
-        this.projectileSpeed = projectileSpeed;
-        this.projectileDamage = projectileDamage;
-
-        Destroy(gameObject, lifeTime);
+    private void Start() {
+        startPosition = transform.position;
     }
 
-    public void Update() {
-        if (!isAwake) return;
+    private void Update() {
+        MoveProjectile();
+        DetectFireDistance();
+    }
 
-        transform.position += direction * projectileSpeed * Time.deltaTime;
-        transform.right = -direction;
+    public void UpdateProjectileRange(float projectileRange) {
+        this.projectileRange = projectileRange;
+    }
+
+    public void UpdateMoveSpeed(float moveSpeed) {
+        this.moveSpeed = moveSpeed;
+    }
+
+    private void MoveProjectile() {
+        transform.Translate(Vector2.right * (moveSpeed * Time.deltaTime));
+    }
+
+    private void DetectFireDistance() {
+        if (Vector3.Distance(transform.position, startPosition) > projectileRange) {
+            Destroy(gameObject);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        if ((wallLayer.value & (1 << collision.transform.gameObject.layer)) > 0) {
+        if (collision.isTrigger) return;
+
+        EnemyHealth enemyHealth = collision.gameObject.GetComponent<EnemyHealth>();
+        //Indestructible indestructible = collision.gameObject.GetComponent<Indestructible>();
+        PlayerHealth player = collision.gameObject.GetComponent<PlayerHealth>();
+
+        /*if (indestructible) {
+            Instantiate(particleOnHitPrefabVFX, transform.position, transform.rotation);
             Destroy(gameObject);
-            return;
+        }*/
+        if (player && isEnemyProjectile) {
+            player?.TakeDamage(1, transform);
+            Instantiate(particleOnHitPrefabVFX, transform.position, transform.rotation);
+            Destroy(gameObject);
+        }
+        else if (enemyHealth && !isEnemyProjectile) {
+            Instantiate(particleOnHitPrefabVFX, transform.position, transform.rotation);
+            Destroy(gameObject);
         }
 
-        if (!collision.gameObject.TryGetComponent<IDamageable>(out IDamageable damageable)) return;
 
-        damageable.TakeDamage(projectileDamage);
-        Destroy(gameObject);
+        /*if (!collision.isTrigger && (enemyHealth || indestructible || player)) {
+            if ((player && isEnemyProjectile) || (enemyHealth && !isEnemyProjectile)) {
+                player?.TakeDamage(1, transform);
+                Instantiate(particleOnHitPrefabVFX, transform.position, transform.rotation);
+                Destroy(gameObject);
+            }
+            else {
+                Instantiate(particleOnHitPrefabVFX, transform.position, transform.rotation);
+                Destroy(gameObject);
+            }
+        }*/
     }
 }

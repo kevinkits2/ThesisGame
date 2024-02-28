@@ -4,28 +4,23 @@ using UnityEngine;
 
 public class FallingSword : MonoBehaviour {
 
+    [SerializeField] private Transform swordTip;
+    [SerializeField] private GameObject dustParticles;
+    [SerializeField] private Sprite swordInGroundSprite;
     [SerializeField] private Transform hitboxOrigin;
-    [SerializeField] private Vector2 hitboxSize;
+    [SerializeField] private float hitboxRadius;
 
     private int damage;
-    private bool isAwake;
 
 
     public void Init(int damage, float lifeTime) {
         this.damage = damage;
-        isAwake = true;
 
         Destroy(gameObject, lifeTime);
     }
 
-    private void Update() {
-        if (!isAwake) return;
-
-        DetectColliders();
-    }
-
     public void DetectColliders() {
-        foreach (Collider2D collider in Physics2D.OverlapBoxAll(hitboxOrigin.position, hitboxSize, 0f)) {
+        foreach (Collider2D collider in Physics2D.OverlapCircleAll(hitboxOrigin.position, hitboxRadius)) {
             if (!collider.gameObject.TryGetComponent<IDamageable>(out IDamageable damageable)) continue;
 
             damageable.TakeDamage(damage);
