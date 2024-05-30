@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerRotation : MonoBehaviour {
+public class PlayerRotation : Singleton<PlayerRotation> {
 
     public bool FacingLeft { get { return facingLeft; } }
     private bool facingLeft;

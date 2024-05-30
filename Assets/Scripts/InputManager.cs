@@ -11,6 +11,7 @@ public class InputManager : Singleton<InputManager> {
     public event EventHandler OnSkillTreeAction;
     public event EventHandler OnStatsAction;
     public event EventHandler OnFallingSwordsAction;
+    public event EventHandler OnInteractPerformed;
 
     private bool attackActionHeldDown;
 
@@ -27,11 +28,16 @@ public class InputManager : Singleton<InputManager> {
         playerControls.Player.Attack.canceled += HandleAttackCanceled;
 
         playerControls.Player.Dash.performed += HandleDashPerformed;
+        playerControls.Player.Interact.performed += HandleInteractPerformed;
 
         playerControls.UI.SkillTree.performed += HandleSkillTreePerfromed;
         playerControls.UI.Stats.performed += HandleStatsPerformed;
 
         playerControls.Skill.FallingSwords.performed += HandleFallingSwordsPerformed;
+    }
+
+    private void HandleInteractPerformed(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
+        OnInteractPerformed?.Invoke(this, EventArgs.Empty);
     }
 
     private void HandleFallingSwordsPerformed(UnityEngine.InputSystem.InputAction.CallbackContext obj) {

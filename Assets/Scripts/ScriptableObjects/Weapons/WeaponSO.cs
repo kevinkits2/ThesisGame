@@ -8,6 +8,7 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 public class WeaponSO : ScriptableObject {
 
     public GameObject weaponPrefab;
+    public GameObject weaponHitEffect;
     public int weaponDamage;
     public float attackCooldown;
 }

@@ -8,6 +8,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable {
 
     [SerializeField] private int maxHealth;
     [SerializeField] private float knockBackThrust = 15f;
+    [SerializeField] private GameObject coinSpawnerPrefab;
 
     private Enemy enemy;
     private DamageFlash damageFlash;
@@ -38,6 +39,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable {
     private void DetectDeath() {
         if (currentHealth <= 0) {
             //Instantiate(deathVFXPrefab, transform.position, Quaternion.identity);
+            Instantiate(coinSpawnerPrefab, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
     }

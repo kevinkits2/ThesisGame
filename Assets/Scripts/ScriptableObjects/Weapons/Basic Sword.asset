@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Basic Sword
   m_EditorClassIdentifier: 
   weaponPrefab: {fileID: 6637298534186575709, guid: fcfc4f1ebf5be2341b632fcd31425d44, type: 3}
+  weaponHitEffect: {fileID: 5954364758719242456, guid: e6ceaa0fb33786246a50d1dd75afc089, type: 3}
   weaponDamage: 10
   attackCooldown: 0.3

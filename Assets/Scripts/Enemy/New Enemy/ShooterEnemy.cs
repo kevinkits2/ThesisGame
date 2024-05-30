@@ -15,8 +15,10 @@ public class ShooterEnemy : MonoBehaviour, IEnemy {
     [SerializeField] private bool stagger;
     [Tooltip("Stagger has to be enabled for oscillate to work properly.")]
     [SerializeField] private bool oscillate;
+    [SerializeField] private bool spriteFlipInverted = false;
 
     private Animator animator;
+    private SpriteRenderer spriteRenderer;
     private bool isShooting = false;
     private AnimationEventHelper animationEventHelper;
 
@@ -37,6 +39,7 @@ public class ShooterEnemy : MonoBehaviour, IEnemy {
 
     private void Awake() {
         animationEventHelper = GetComponentInChildren<AnimationEventHelper>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         animator = GetComponentInChildren<Animator>();
     }
 
@@ -52,6 +55,13 @@ public class ShooterEnemy : MonoBehaviour, IEnemy {
         if (isShooting) return;
 
         animator.SetTrigger(ATTACK_HASH);
+
+        if (transform.position.x - Player.Instance.transform.position.x < 0) {
+            spriteRenderer.flipX = !spriteFlipInverted ? false : true;
+        }
+        else {
+            spriteRenderer.flipX = !spriteFlipInverted ? true : false;
+        }
     }
 
     private IEnumerator ShootRoutine() {

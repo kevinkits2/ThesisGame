@@ -14,6 +14,7 @@ public class EnemyAI : MonoBehaviour {
     [SerializeField] private MonoBehaviour enemyType;
     [SerializeField] private float attackCooldown = 2f;
     [SerializeField] private bool stopMovingWhileAttacking = false;
+    [SerializeField] private bool disableRoaming = false;
 
     private bool canAttack = true;
 
@@ -53,7 +54,9 @@ public class EnemyAI : MonoBehaviour {
     private void Roaming() {
         timeRoaming += Time.deltaTime;
 
-        enemyPathfinding.MoveTo(roamPosition);
+        if (!disableRoaming) {
+            enemyPathfinding.MoveTo(roamPosition);
+        }
 
         if (Vector2.Distance(transform.position, Player.Instance.transform.position) < attackRange) {
             state = State.Attacking;
@@ -74,11 +77,13 @@ public class EnemyAI : MonoBehaviour {
         canAttack = false;
         (enemyType as IEnemy).Attack();
 
-        if (stopMovingWhileAttacking) {
-            enemyPathfinding.StopMoving();
-        }
-        else {
-            enemyPathfinding.MoveTo(roamPosition);
+        if (!disableRoaming) {
+            if (stopMovingWhileAttacking) {
+                enemyPathfinding.StopMoving();
+            }
+            else {
+                enemyPathfinding.MoveTo(roamPosition);
+            }
         }
 
         StartCoroutine(AttackCooldownRoutine());
